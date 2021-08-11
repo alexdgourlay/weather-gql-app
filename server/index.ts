@@ -26,20 +26,17 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", (ws: WebSocket) => {
   //connection is up, let's add a simple simple event
   ws.on("message", (message: string) => {
-    //log the received message and send it back to the client
-    console.log("received: %s", message);
     const results = index.search(message);
     ws.send(JSON.stringify(results));
   });
 });
 
 app.get("/country/:id", function (req, res) {
-  console.log(req.params);
   res.send(req.params);
 });
 
 //start our server
-const listener = server.listen(process.env.PORT || 8999, () => {
+const listener = server.listen(8999, () => {
   const address = listener.address() as WebSocket.AddressInfo;
   console.log(`Server started on port ${address.port}`);
 });

@@ -1,32 +1,51 @@
 import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
 import { RoutableProps } from "preact-router";
 
-import Location from "../../types/location";
 import { Search } from "../../components/index";
-import WeatherWidget from "../../components/weatherWidget/weatherWidget";
+import WidgetGrid from "../../components/widgetGrid/widgetGrid";
+import UnitsSelect from "../../components/unitsSelect/unitsSelect";
+import { WeatherWidgetActionType } from "../../contexts/weatherWidgetReducer";
+import { useWeatherWidgetState } from "../../contexts/WeatherWidgetContext";
+import styled, { StyledProps } from "styled-components";
 
-const searchWebSocket = new WebSocket("ws://localhost:8999");
+const searchWebSocket = new WebSocket("ws://192.168.1.105:8999");
+
+const Container = styled.div`
+  height: 100vh;
+  padding: var(--global-padding);
+  background-color: #e9ecf1;
+`;
+
+const HeaderContainer = styled.div(
+  (props: StyledProps<{}>) =>
+    `
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: ${props.theme.spacing.l} 0;
+  `
+);
 
 const Home = (props: RoutableProps) => {
-  const [selectedResultId, setSelectedResultId] = useState<
-    Location["id"] | undefined
-  >(undefined);
+  const { state, dispatch } = useWeatherWidgetState();
+  const { locationIDs } = state;
 
   return (
-    <div>
-      <Search
-        webSocket={searchWebSocket}
-        onResultSelected={(result) => {
-          console.log(result);
-          setSelectedResultId(result.id);
-        }}
-      />
+    <Container>
+      <h2>GraphQL Weather App</h2>
+      <HeaderContainer>
+        <Search
+          webSocket={searchWebSocket}
+          onResultSelected={(result) => {
+            dispatch({ type: WeatherWidgetActionType.AddWidget, payload: result.id.toString() });
+          }}
+        />
+        <UnitsSelect />
+      </HeaderContainer>
 
-      {selectedResultId && (
-        <WeatherWidget cityId={[selectedResultId.toString()]} />
-      )}
-    </div>
+      <WidgetGrid cityIDs={locationIDs} />
+    </Container>
   );
 };
 

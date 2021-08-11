@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ConfigInput } from "./../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL query operation: GetWeather
 // ====================================================
@@ -43,6 +45,8 @@ export interface GetWeather_getCityById_weather {
 
 export interface GetWeather_getCityById {
   __typename: "City";
+  name: string | null;
+  country: string | null;
   weather: GetWeather_getCityById_weather | null;
 }
 
@@ -52,4 +56,5 @@ export interface GetWeather {
 
 export interface GetWeatherVariables {
   cityId?: string[] | null;
+  config?: ConfigInput | null;
 }
