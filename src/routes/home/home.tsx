@@ -9,7 +9,8 @@ import { WeatherWidgetActionType } from "../../contexts/weatherWidgetReducer";
 import { useWeatherWidgetState } from "../../contexts/WeatherWidgetContext";
 import styled, { StyledProps } from "styled-components";
 
-const searchWebSocket = new WebSocket("wss://gql-weather-server.herokuapp.com");
+const createSearchWebsocket = () => new WebSocket("wss://gql-weather-server.herokuapp.com");
+let searchWebSocket= createSearchWebsocket();
 
 const Container = styled.div`
   height: 100vh;
@@ -33,14 +34,15 @@ const Home = (props: RoutableProps) => {
   const { state, dispatch } = useWeatherWidgetState();
   const { locationIDs } = state;
 
-  // useEffect(() => {
-  //   searchWebSocket.onclose = () => {
-  //     searchWebSocket = new WebSocket("wss://gql-weather-server.herokuapp.com")
-  //   }
-  //   return () => {
-  //     searchWebSocket.close();
-  //   }
-  // }, [])
+  useEffect(() => {
+    searchWebSocket.onclose = () => {
+      console.log('web socket closed');
+      searchWebSocket = createSearchWebsocket();
+    }
+    return () => {
+      searchWebSocket.close();
+    }
+  }, [])
 
 
   return (

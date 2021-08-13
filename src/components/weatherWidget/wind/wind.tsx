@@ -74,8 +74,6 @@ const Direction = styled.p`
 const Wind = (props: Props) => {
   const { wind, unit } = props;
 
-  console.log(wind);
-
   return (
     <Container>
       {wind.deg && (
