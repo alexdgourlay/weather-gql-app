@@ -54,12 +54,14 @@ const StyledRemoveButton = styled(RemoveButton)(
 
 const Container = styled.div(
   (props: StyledProps<{}>) => `
+  width: 100%;
   position: relative;
   background-color: ${props.theme.color.surface};
-  padding: ${props.theme.spacing.xs} ${props.theme.spacing.l}  ${props.theme.spacing.m} ${props.theme.spacing.l};
+  padding: ${props.theme.spacing.xs} ${props.theme.spacing.m}  ${props.theme.spacing.m} ${props.theme.spacing.m};
   display: grid;
   grid-row-gap: ${props.theme.spacing.s};
   grid-column-gap: ${props.theme.spacing.m};
+  grid-template-rows: 4em 4em auto;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: 
     "head head"
@@ -96,6 +98,7 @@ const Location = styled.div(
   flex-direction: column;
   align-items: center;
   text-align: center;
+  align-self: end;
 `
 );
 

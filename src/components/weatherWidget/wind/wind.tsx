@@ -4,7 +4,7 @@ import { Unit } from "../../../../__generated__/globalTypes";
 import ArrowIcon from "../../icons/arrowIcon";
 import { GetWeather_getCityById_weather_wind } from "../__generated__/GetWeather";
 
-interface props {
+interface Props {
   wind: GetWeather_getCityById_weather_wind;
   unit: Unit;
 }
@@ -71,8 +71,11 @@ const Direction = styled.p`
   grid-area: direction;
 `;
 
-const Wind = (props: props) => {
+const Wind = (props: Props) => {
   const { wind, unit } = props;
+
+  console.log(wind);
+
   return (
     <Container>
       {wind.deg && (

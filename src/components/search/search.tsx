@@ -1,5 +1,6 @@
-import { h, JSX } from "preact";
+import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
+import { FormEvent } from "react";
 import styled, { StyledProps } from "styled-components";
 import { useDebounce } from "../../hooks/index";
 
@@ -10,8 +11,8 @@ interface SearchProps {
   webSocket: WebSocket;
   debounceDelay?: number;
   dropDownMaxLength?: number;
-  onResultsChange?(results: Results): void;
-  onResultSelected?(result: Result): void;
+  onResultsChange?: (results: Results) => void;
+  onResultSelected?: (result: Result) => void;
 }
 
 const Container = styled.div`
@@ -38,9 +39,9 @@ const Search = (props: SearchProps) => {
   const {
     webSocket,
     debounceDelay = 400,
-    dropDownMaxLength = 8,
-    onResultsChange = () => {},
-    onResultSelected = () => {},
+    dropDownMaxLength,
+    onResultsChange = () => { },
+    onResultSelected = () => { },
   } = props;
 
   const [query, setQuery] = useState<string | undefined>(undefined);
@@ -51,6 +52,10 @@ const Search = (props: SearchProps) => {
     setResults(results);
     onResultsChange(results);
   };
+
+  const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
+    setQuery(event.currentTarget.value);
+  }
 
   const handleWsMessage = (event: MessageEvent<any>) => {
     let data: Results;
@@ -71,11 +76,20 @@ const Search = (props: SearchProps) => {
 
   useEffect(() => {
     webSocket.onmessage = handleWsMessage;
+    webSocket.onopen = () => {
+      "Websocket connection established.";
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [webSocket]);
 
   useEffect(() => {
     if (debouncedQuery !== undefined) webSocket.send(debouncedQuery);
-  }, [debouncedQuery]);
+  }, [debouncedQuery, webSocket]);
+
+  const resultsToDisplay =
+    dropDownMaxLength === undefined || results === null ? results : results.slice(0, dropDownMaxLength);
+
+  const hasResults = Array.isArray(resultsToDisplay) && resultsToDisplay.length > 0;
 
   return (
     <Container>
@@ -85,15 +99,9 @@ const Search = (props: SearchProps) => {
         type="text"
         placeholder="Search"
         value={query}
-        onChange={({ currentTarget }) => {
-          setQuery(currentTarget.value);
-        }}
+        onChange={handleInputChange}
       />
-
-      <StyledDropDown
-        results={results && results.slice(0, dropDownMaxLength)}
-        onResultSelected={handleResultSelected}
-      />
+      {hasResults && <StyledDropDown results={resultsToDisplay} onResultSelected={handleResultSelected} />}
     </Container>
   );
 };

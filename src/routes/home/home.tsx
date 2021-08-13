@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { useEffect } from 'preact/hooks'
 import { RoutableProps } from "preact-router";
 
 import { Search } from "../../components/index";
@@ -8,7 +9,7 @@ import { WeatherWidgetActionType } from "../../contexts/weatherWidgetReducer";
 import { useWeatherWidgetState } from "../../contexts/WeatherWidgetContext";
 import styled, { StyledProps } from "styled-components";
 
-const searchWebSocket = new WebSocket("ws://192.168.1.105:8999");
+const searchWebSocket = new WebSocket("wss://gql-weather-server.herokuapp.com");
 
 const Container = styled.div`
   height: 100vh;
@@ -27,9 +28,20 @@ const HeaderContainer = styled.div(
   `
 );
 
+// eslint-disable-next-line no-unused-vars
 const Home = (props: RoutableProps) => {
   const { state, dispatch } = useWeatherWidgetState();
   const { locationIDs } = state;
+
+  // useEffect(() => {
+  //   searchWebSocket.onclose = () => {
+  //     searchWebSocket = new WebSocket("wss://gql-weather-server.herokuapp.com")
+  //   }
+  //   return () => {
+  //     searchWebSocket.close();
+  //   }
+  // }, [])
+
 
   return (
     <Container>
