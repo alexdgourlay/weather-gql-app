@@ -1,0 +1,1 @@
+web: node build/ssr-build/ssr-bundle.js
