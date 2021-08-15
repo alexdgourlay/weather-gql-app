@@ -10,8 +10,7 @@
     "lint": "eslint src",
     "test": "jest",
     "codegen:schema": "npx apollo client:download-schema --endpoint=https://graphql-weather-api.herokuapp.com/",
-    "codegen:generate": "npx apollo client:codegen --localSchemaFile=schema.json --includes=src/**/*.tsx --target=typescript",
-    "heroku-postbuild": "npm run build"
+    "codegen:generate": "npx apollo client:codegen --localSchemaFile=schema.json --includes=src/**/*.tsx --target=typescript"
   },
   "engines": {
     "node": "13.7.0"
