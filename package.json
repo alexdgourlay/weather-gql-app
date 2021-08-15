@@ -5,11 +5,11 @@
   "license": "MIT",
   "scripts": {
     "build": "preact build --no-prerender",    
-    "heroku-postbuild": "preact build --no-prerender",    
-    "serve": "ls && sirv build --port 8080 --cors --single",
+    "serve": "sirv build --port 8080 --cors --single",
     "start": "preact watch",
     "lint": "eslint src",
     "test": "jest",
+    "list": "ls",
     "codegen:schema": "npx apollo client:download-schema --endpoint=https://graphql-weather-api.herokuapp.com/",
     "codegen:generate": "npx apollo client:codegen --localSchemaFile=schema.json --includes=src/**/*.tsx --target=typescript"
   },
