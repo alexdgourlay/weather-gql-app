@@ -25,7 +25,7 @@ export default function weatherWidgetReducer(
   switch (action.type) {
     case WeatherWidgetActionType.AddWidget:
       return (() => {
-        const locationIDs = [...state.locationIDs, action.payload];
+        const locationIDs = [action.payload, ...state.locationIDs];
         return { ...state, locationIDs };
       })();
     case WeatherWidgetActionType.RemoveWidget:

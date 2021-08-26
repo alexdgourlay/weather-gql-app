@@ -76,9 +76,18 @@ const Search = (props: SearchProps) => {
 
   useEffect(() => {
     webSocket.onmessage = handleWsMessage;
+    let webSocketPingInterval: ReturnType<typeof setInterval> | undefined;
     webSocket.onopen = () => {
       "Websocket connection established.";
-    };
+      webSocketPingInterval = setInterval(() => {
+        webSocket.send('');
+      }, 30 * 1000)
+    }
+    return () => {
+      if (webSocketPingInterval !== undefined) {
+       clearInterval(webSocketPingInterval)
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [webSocket]);
 
