@@ -1,1 +1,1 @@
-web: ls
+web: npm run serve
