@@ -9,7 +9,7 @@
     "start": "preact watch",
     "lint": "eslint src",
     "test": "jest",
-    "heroku-postbuild": "preact build --no-prerender",
+    "heroku-postbuild": "preact build",
     "codegen:schema": "npx apollo client:download-schema --endpoint=https://graphql-weather-api.herokuapp.com/",
     "codegen:generate": "npx apollo client:codegen --localSchemaFile=schema.json --includes=src/**/*.tsx --target=typescript"
   },
