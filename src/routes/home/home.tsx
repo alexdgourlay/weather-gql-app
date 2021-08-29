@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useEffect,useMemo } from 'preact/hooks'
+import { useMemo } from 'preact/hooks'
 import { RoutableProps } from "preact-router";
 
 import { Search } from "../../components/index";
@@ -14,6 +14,11 @@ const Container = styled.div`
   padding: var(--global-padding);
   background-color: #e9ecf1;
 `;
+
+const InnerContainer = styled.div`
+  max-width: 1600px;
+  margin: auto;
+`
 
 const HeaderContainer = styled.div(
   (props: StyledProps<{}>) =>
@@ -33,22 +38,23 @@ const Home = (props: RoutableProps) => {
 
   const searchWebSocket = useMemo(() => new WebSocket("wss://gql-weather-server.herokuapp.com"), []);
 
-
-
   return (
     <Container>
-      <h2>GraphQL Weather App</h2>
-      <HeaderContainer>
-        <Search
-          webSocket={searchWebSocket}
-          onResultSelected={(result) => {
-            dispatch({ type: WeatherWidgetActionType.AddWidget, payload: result.id.toString() });
-          }}
-        />
-        <UnitsSelect />
-      </HeaderContainer>
+      <InnerContainer>
 
-      <WidgetGrid cityIDs={locationIDs} />
+        <h2>GraphQL Weather App</h2>
+        <HeaderContainer>
+          <Search
+            webSocket={searchWebSocket}
+            onResultSelected={(result) => {
+              dispatch({ type: WeatherWidgetActionType.AddWidget, payload: result.id.toString() });
+            }}
+          />
+          <UnitsSelect />
+        </HeaderContainer>
+
+        <WidgetGrid cityIDs={locationIDs} />
+      </InnerContainer>
     </Container>
   );
 };
